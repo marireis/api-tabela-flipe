@@ -2,9 +2,11 @@ package br.com.marina.tabelaFipe.principal;
 
 import br.com.marina.tabelaFipe.model.Dados;
 import br.com.marina.tabelaFipe.model.Modelos;
+import br.com.marina.tabelaFipe.model.Veiculo;
 import br.com.marina.tabelaFipe.service.ConsumoApi;
 import br.com.marina.tabelaFipe.service.ConverteDados;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -78,7 +80,19 @@ public class Principal {
 
         List<Dados> anos = conversor.obterLista(json, Dados.class);//representar os anos do carro
 
+        List<Veiculo> veiculos = new ArrayList<>();
 
+        for(int i=0; i<anos.size(); i++){
+            var enderecoAnos = endereco + "/" + anos.get(i).codigo();
+            json = consumo.obterDados(enderecoAnos);
+
+            Veiculo veiculo = conversor.obterDados(json, Veiculo.class);
+            veiculos.add(veiculo);
+
+            System.out.println("\nTodos veiculos filtrados com avalaição por ano: ");
+
+            veiculos.forEach(System.out::println);
+        }
     }
 
 }
